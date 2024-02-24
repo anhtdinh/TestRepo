@@ -10,6 +10,7 @@ install.packages("rpart")
 install.packages("rpart.plot")
 install.packages("ipred")
 install.packages("caret")
+install.packages("Rcrawler")
 
 # ---- Loading packages ----
 library(dplyr)
@@ -24,6 +25,7 @@ library(rpart)       # performing regression trees
 library(rpart.plot)  # plotting regression trees
 library(ipred)       # bagging
 library(caret)       # bagging
+library(Rcrawler)
 
 
 # ---- Loading dataset -----
