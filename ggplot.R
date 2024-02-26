@@ -150,3 +150,12 @@ plot_data_his = function(car){
     print()
   
 }
+
+
+# Alcohol ----
+bac = read.csv("data.csv")
+colnames(bac) = c("Country","Year", "General", "Young_driver", "Prof_driver")
+bac = bac[-c(1),]
+
+
+# World maps ------
