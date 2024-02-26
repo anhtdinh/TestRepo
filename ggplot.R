@@ -93,7 +93,60 @@ train = titanic[train_index, ]
 test = titanic[-train_index, ]
 
 # Tree -----
-tree_titan = rpart(Survived ~ Class + Sex + Age, data = train, method = "class")
+tree_titan = rpart(Survived ~ Class + Sex + Age, data = train,
+                   cp= 0.001,
+                   maxdepth = 5,
+                   minbucket = 5,
+                   method = "class")
 rpart.plot(tree_titan, main = "Titanic survivaltree")
 
 
+# ------
+library(caret)    
+
+titanic_train <- read.csv("../input/train.csv")
+
+titanic_train$Pclass <- ordered(titanic_train$Pclass,     # Convert to ordered factor
+                                levels=c("3","2","1"))  
+
+impute <- preProcess(titanic_train[,c(6:8,10)],  # Impute missing ages
+                     method=c("knnImpute"))
+
+titanic_train_imp <- predict(impute, titanic_train[,c(6:8,10)])     
+
+titanic_train <- cbind(titanic_train[,-c(6:8,10)], titanic_train_imp)
+
+# ----
+car =mtcars %>% 
+  pivot_longer(cols = everything(),
+               names_to = "variable",
+               values_to = "value")
+              
+
+car_histograms <- ggplot(car, aes(x = value)) +
+  geom_histogram(bins = 30, color = "black", fill = "lightblue") +
+  facet_wrap(~variable,scale = "free", ncol = 4) +
+  labs(title = "Histograms of Numeric cars",
+       x = "Value",
+       y = "Frequency") +
+  theme_minimal()
+
+# Plot the histograms
+print(car_histograms)
+
+
+plot_data_his = function(car){
+  car %>% 
+    pivot_longer(cols = everything(),
+                 names_to = "variable",
+                 values_to = "value") %>% 
+    ggplot(aes(x = value)) +
+      geom_histogram(bins = 30, color = "black", fill = "lightblue") +
+      facet_wrap(~variable,scale = "free", ncol = 4) +
+      labs(title = "Histograms of Numeric cars",
+           x = "Value",
+           y = "Frequency") +
+      theme_minimal() %>% 
+    print()
+  
+}
