@@ -33,4 +33,65 @@ boston_histograms <- ggplot(boston_data_long, aes(x = value)) +
 print(boston_histograms)
 
 
+# Spliting data ------
 
+set.seed(123)
+set1 = initial_split(Boston, prop = 0.75)
+train_data <- training(data_split)
+test_data <- testing(data_split)
+
+# Fit model tree ----
+# Create a decision tree model specification
+tree_spec <- decision_tree() %>%
+  set_engine("rpart") %>%
+  set_mode("regression")
+
+# Fit the model to the training data
+tree_spec <- decision_tree() %>%
+  set_engine("rpart") %>%
+  set_mode("regression")
+tree_fit = tree_spec %>%
+  fit(medv ~ ., data = train_data)
+
+# Testing ------
+# Make predictions on the testing data
+predictions <- tree_fit %>%
+  predict(test_data) %>%
+  pull(.pred)
+
+# Calculate RMSE and R-squared
+metrics <- metric_set(rmse, rsq)
+model_performance <- test_data %>%
+  mutate(predictions = predictions) %>%
+  metrics(truth = medv, estimate = predictions)
+
+print(model_performance)
+
+## ------
+library(rpart)
+library(rpart.plot)
+# loading data -----
+#set.seed(123)
+train_index = sample(1:nrow(s), size = 0.7 * nrow(s))
+train = s[train_index, ]
+test = s[-train_index, ]
+
+# Train decision tree -----
+tree = rpart(mpg ~ cyl + hp + drat + gear, data = train, method = "anova")
+rpart.plot(tree, main = "Decision Tree")
+
+# -----
+s = mtcars
+
+# Titanic -----
+
+titanic %>% 
+  explore(Age, target = Survived, n = n)
+
+train_index = sample(1:nrow(titanic), size = 0.7 * nrow(titanic))
+train = titanic[train_index, ]
+test = titanic[-train_index, ]
+
+# Tree -----
+tree_titan = rpart(Survived ~ Class + Sex + Age, data = train, method = "class")
+rpart.plot(tree_titan, main = "Titanic survivaltree")
