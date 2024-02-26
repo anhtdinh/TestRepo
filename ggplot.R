@@ -93,5 +93,7 @@ train = titanic[train_index, ]
 test = titanic[-train_index, ]
 
 # Tree -----
-tree_titan = rpart(Survived ~ Class + Sex + Age, data = train, method = "class")
+tree_titan = rpart(Survived ~ Class + Sex + Age, data = train, method = "anova")
 rpart.plot(tree_titan, main = "Titanic survivaltree")
+
+
