@@ -159,3 +159,14 @@ bac = bac[-c(1),]
 
 
 # World maps ------
+## Create multiple color codes, with Burkina Faso in its own group
+malDF <- data.frame(country = c("BRA", "COD", "BFA"),
+                    malaria = c(1, 1, 2))
+
+## Re-merge
+malMap <- joinCountryData2Map(malDF, joinCode = "ISO3",
+                              nameJoinColumn = "country")
+
+## Specify the colourPalette argument
+mapCountryData(malMap, nameColumnToPlot="malaria", catMethod = "categorical",
+               missingCountryCol = gray(.8), colourPalette = c("red", "blue"))
